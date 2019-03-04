@@ -1,0 +1,265 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Buscaminas</title>
+    <script src="jquery-3.2.1.min.js"></script>
+    <script>
+    
+     var matriz =new Array(10);
+	 var imagenes=new Array();
+	 var JUEGO=new Array(8);
+	 var inicio,n,x,y;
+		 function iniciar(){
+		   inicio=true;
+		   for(var i=0;i<8;i++){
+		          JUEGO[i]=new Array(8);
+		    
+		   }
+		   for(var i=0;i<10;i++){
+			   matriz[i]=new Array(10);
+			}
+		   for (i=0; i<10; i++){
+		     for (e=0; e<10; e++){
+		         matriz[i][e] = 0;
+	    	}
+		  }
+			for (i=0; i<10; i++){
+		           matriz[i][0]=-2;
+                   matriz[i][9]=-2;
+				 for (e=0; e<10; e++){
+				    if(i==0 || i==9) matriz[i][e]=-2;
+				 }
+			}
+		
+		   var fi,co,cont=0;
+	  do{
+		  
+		  fi=Math.round(Math.random()*9);
+		  co=Math.round(Math.random()*9);
+		  if(matriz[fi][co]==0){
+			  matriz[fi][co]=-1;
+			  cont++;  
+		  }
+		  
+	   }while(cont<10);
+	   
+	   // opciones 
+	      for (i=1; i<9; i++){
+		     for (e=1; e<9; e++){
+			  if(matriz[i][e]==0){
+				 n=0;
+				 x=i;y=e;
+		        buscar_opciones();
+           		 matriz[i][e]=n;
+			  }
+			}
+		}
+	   
+		   imagenes.push("<img src='cuadrado1.png'></img>");
+		   imagenes.push("<img src='bomba.jpg'></img>");
+		   imagenes.push("<img src='cuadrado2.png'></img>");
+		  for (i=1; i<9; i++){
+		     for (e=1; e<9; e++){
+		         if(matriz[i][e]==0){
+					var ima="<img src='cuadrado1.png'  ></img>";
+				   document.writeln(ima);
+				   }
+				   else  if(matriz[i][e]==-1){
+					var imagen="<img src='cuadrado1.png'  ></img>";
+				   document.writeln(imagen);
+				   }
+				   else {
+				      	var imagen="<img src='cuadrado1.png'  ></img>";
+				   document.writeln(imagen);
+				   }
+	    	   }
+		      document.writeln("<br/>");
+		   }
+    	 	if(inicio){
+				var game=document.querySelectorAll("img");
+				
+				for(var i=0;i<game.length;i++){
+				   game[i].id=''+(i+1);
+				   
+				}
+				var cont=0;
+				for(var i=1;i<9;i++){			
+					for(var j=1;j<9;j++){
+							JUEGO[i][j]=game[cont];
+							cont++;
+						}
+					}
+			  inicio=false;
+			}
+		 
+		 
+		}
+	   function buscar_opciones(){
+		   
+			  if(matriz[x][y]==0){
+	        
+	
+				if(matriz[x][y-1]==-1 ){// izquierda
+				   n++;
+				}
+				 if(matriz[x+1][y-1]==-1){// esquina inferior izquierda
+					n++;
+				}
+				if(matriz[x+1][y]==-1){// abajo
+					n++;
+				}
+				if(matriz[x+1][y+1]==-1){// esquina inferior derecha
+					n++;
+				}
+			   if(matriz[x][y+1]==-1){// derecha
+					n++;
+				}
+			   if(matriz[x-1][y+1]==-1 ){// esquina superior derecha
+					n++;
+				 }
+			   if(matriz[x-1][y]==-1 ){//arriba
+				n++;
+			  }
+			 if(matriz[x-1][y-1]==-1){// esquina superior izquierda
+			      n++;
+				}
+	
+		  }
+	   }
+	   function Imprimir_matriz(){
+	      
+		
+		    for(var i=1;i<9;i++){
+		    
+				for(var j=1;j<9;j++){
+				  
+				}
+			}
+		
+		   
+		}
+		window.onload=iniciar;
+		$(document).ready(function() {
+		 var  cont=1;	
+		 for(var i=0;i<8;i++){
+		    
+			for(var j=0;j<8;j++){
+			    $("#"+cont).click(function (){
+					  
+					  revisar(this.id);
+					});	
+					cont++;
+			}	 
+			 
+		 }
+        
+			
+        });
+		function revisar(nom){
+			var cont=1;
+			
+			for(var i=1;i<9;i++){
+		    
+				for(var j=1;j<9;j++){
+				   var nombre=""+cont;
+				    if(nombre==nom){
+					    if(matriz[i][j]==-1){
+						 alert("perdiste");
+						 $("#"+nom).attr("src","bomba.jpg");
+						}
+						else if(matriz[i][j]==1){
+						
+						 $("#"+nom).attr("src","1.png");
+						} 
+						else if(matriz[i][j]==0){
+							revisar_0(nom,i,j);
+					
+						} 
+						else if(matriz[i][j]==2){
+						
+						 $("#"+nom).attr("src","2.png");
+						} 
+						else if(matriz[i][j]==3){
+						
+						 $("#"+nom).attr("src","3.png");
+						} 
+						else if(matriz[i][j]==4){
+						
+						 $("#"+nom).attr("src","4.png");
+						} 
+						else if(matriz[i][j]==5){
+						
+						 $("#"+nom).attr("src","5.png");
+						} 
+						else if(matriz[i][j]==6){
+						
+						 $("#"+nom).attr("src","6.png");
+						} 
+					}
+					cont++;
+				}
+			}
+		  	function revisar_0(nom,w,z){
+			    var c,v;
+			   $("#"+nom).attr("src","cuadrado2.png");
+			   var band=1,nomaux=0;
+		        do{
+					 c=w;v=z;nomaux=parseInt(nom);
+					if(band==1){
+					    v++;nomaux++;
+						if(matriz[c][v]==0){
+						    $("#"+nomaux).attr("src","cuadrado2.png");
+						}
+						else{
+						  band=2;
+						}
+					}
+					 c=w;v=z;nomaux=parseInt(nom);
+					 if(band==2){
+					     v--;nomaux--;
+						if(matriz[c][v]==0){
+						    $("#"+nomaux).attr("src","cuadrado2.png");
+						}
+						else{
+						  band=3;
+						}
+					}
+					 c=w;v=z;nomaux=parseInt(nom);
+					if(band==3){
+					     c++;nomaux+=7;
+						if(matriz[c][v]==0){
+						    $("#"+nomaux).attr("src","cuadrado2.png");
+						}
+						else{
+						  band=4;
+						}
+					}
+					 c=w;v=z;nomaux=parseInt(nom);
+					 if(band==4){
+					     c--;nomaux-=7;
+						if(matriz[c][v]==0){
+						    $("#"+nom).attr("src","cuadrado2.png");
+						}
+						else{
+						  band=0;
+						}
+					}
+					break;
+			    }while(band>0);
+			
+			}
+	 
+		
+	    }
+    
+    </script>
+    </head>
+    
+    <body>
+    	<br><br><br>
+       <div id="juego">
+       
+       </div>
+    </body>
+</html>
